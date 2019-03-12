@@ -22,12 +22,15 @@ typedef struct tetrimino
 {
     int height;
     int width;
-    char grid[4][4];
-    tetrimino *next;
+    int grid[4];
+    char letter;
+    struct tetrimino *next;
 } tetrimino;
 
+int floorSqrt(int number);
 int check(char *buf, int bytes);
 int check_order(char *buf);
 int reader (int fd, tetrimino *tet);
+tetrimino *create_list(char **buf,int height, int width, char letter);
 
 #endif

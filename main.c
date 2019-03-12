@@ -26,7 +26,9 @@ int main (int argc, char **argv)
 	if (!(reader(open(argv[1], O_RDONLY), tet)))
 		ft_putstr("error\n");
 	else
-		ft_putstr("Valid\n");		
+		ft_putstr("Valid\n");
 	//close();
+	for (int i = 1; i<= 26; i++)
+		printf("%d - min %d - max %d\n",i,floorSqrt(4 * i),floorSqrt(4 * i) + 2);
 	return (0);
 }

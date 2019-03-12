@@ -12,19 +12,29 @@
 
 #include "fillit.h"
 
-//NOT WORKING
-
-tetrimino write_to_struct(char *buf, char letter)
+int floorSqrt(int number)
 {
-    int i;
-    int j;
-    tetrimino tet;
+    int start;
+    int end;
+    int ans;
+    int mid;
 
-    i = 0;
-    j = 0;
-    
-   
-    return(tet);
+    start = 1;
+    end = number;
+    while (start <= end)
+    {
+        mid = (start + end) / 2;
+        if (mid * mid == number)
+            return (mid);
+        if (mid * mid < number)
+        {
+            start = mid + 1;
+            ans = mid;
+        }
+        else
+            end = mid - 1;
+    }
+    return (ans + 1);
 }
 
 int check(char *buf, int bytes)
@@ -87,7 +97,7 @@ int check_order(char *buf)
         j = 0;
         i++;
     }
-    return (sum >= 6 ? 1 : 0);
+    return (sum == 6 || sum == 8 ? 1 : 0);
 }
 
 int reader(int fd, tetrimino *tet)
@@ -105,7 +115,7 @@ int reader(int fd, tetrimino *tet)
     {
         if (!check(buf, bytes))
             return (0);
-        tet[i] = write_to_struct(buf, letter++);
+        //tet[i] = write_to_struct(buf, letter++);
     }
     return (1);
 }
