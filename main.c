@@ -14,21 +14,19 @@
 
 int main (int argc, char **argv)
 {
-	int fd;
+	tetrimino tet[MAX_TETRIMINO];
+	//int tet_count;
 
+	//tet_count = 0;
 	if (argc != 2)
 	{
 		ft_putstr("usage: ./fillit input file\n");
 		return (-1);
 	}
-	else 
-	{
-		fd = open(argv[1], O_RDONLY);
-		if (reader(fd))
-			ft_putstr("Valid\n");
-		else
-			ft_putstr("Not Valid\n");		
-		close(fd);
-	}
+	if (!(reader(open(argv[1], O_RDONLY), tet)))
+		ft_putstr("error\n");
+	else
+		ft_putstr("Valid\n");		
+	//close();
 	return (0);
 }

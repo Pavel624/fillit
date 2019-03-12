@@ -13,19 +13,21 @@
 #ifndef FILLIT_H
 #include <stdio.h>
 #include <fcntl.h>
-#include "libft/libft.h"
+#include "./libft/libft.h"
 #include <stdlib.h>
-#define BUFF_SIZE 20
+#define BUFF_SIZE 21
+#define MAX_TETRIMINO 26
 
 typedef struct tetrimino
 {
     int height;
     int width;
     char grid[4][4];
-    struct tetrimino *next;
+    tetrimino *next;
 } tetrimino;
 
-int check(char *buf);
-int reader (int fd);
+int check(char *buf, int bytes);
+int check_order(char *buf);
+int reader (int fd, tetrimino *tet);
 
 #endif
