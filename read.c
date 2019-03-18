@@ -39,8 +39,8 @@ int floorSqrt(int number)
 
 int check(char *buf, int bytes)
 {
-    int i;
-    int j;
+    char i;
+    char j;
     int hash_num;
 
     i = 0;
@@ -65,7 +65,7 @@ int check(char *buf, int bytes)
         return (0);
     if (!(check_order(buf)))
         return (0);
-    return (1);
+    return (bytes == 21 ? 1 : 2);
 }
 
 int check_order(char *buf)
@@ -100,22 +100,66 @@ int check_order(char *buf)
     return (sum == 6 || sum == 8 ? 1 : 0);
 }
 
-int reader(int fd, tetrimino *tet)
+/*
+** Check for minimum rectangle
+** required for a piece.
+** 0 - left 1 - right 2 - top 3 - bottom
+*/
+
+static void tetrimino_rectangle(char *buf, unsigned char *rectangle)
 {
-    char buf[BUFF_SIZE + 1];
-    int bytes;
     int i;
-    char letter;
 
     i = 0;
-    letter = 'A';
-    ft_bzero(tet,80);
+    rectangle[0] = 3;
+    rectangle[1] = 0;
+    rectangle[2] = 3;
+    rectangle[3] = 0;
 
-    while ((bytes = read(fd, buf, BUFF_SIZE)) > 19)
+    while (i < 20)
     {
-        if (!check(buf, bytes))
+            if (buf[i] == '#')
+            {
+                if (i % 5 < rectangle[0])
+                    rectangle[0] = i % 5;
+                if (i % 5 > rectangle[1])
+                    rectangle[1] = i % 5;
+                if (i / 5 < rectangle[2])
+                    rectangle[2] = i / 5;
+                if (i / 5 > rectangle[3])
+                    rectangle[3] = i / 5;
+            }
+        i++;
+    }
+}
+
+tetrimino *create_list(tetrimino *tet, char *buf, char letter)
+{
+    unsigned char rectangle[4];
+
+    tetrimino_rectangle(buf, rectangle);
+    tet->width = rectangle[1] - rectangle[0] + 1;
+    tet->height = rectangle[3] - rectangle[2] + 1;
+    tet->shape = 0;
+    tet->letter = letter;
+    return(tet);
+}
+
+int reader(int fd, tetrimino *tet)
+{
+    char buf[BUFF_SIZE];
+    char letter;
+    int bytes;
+
+    letter = 'A';
+    while ((bytes = read(fd, buf, BUFF_SIZE)) >= 20)
+    {
+        if (!check(buf, bytes) || (letter - 'A') >= 26)
             return (0);
-        //tet[i] = write_to_struct(buf, letter++);
+        if (!(create_list(tet, buf, letter)))
+            return (0);
+        tet++;
+        letter++;
     }
     return (1);
 }

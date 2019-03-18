@@ -22,7 +22,7 @@ typedef struct tetrimino
 {
     int height;
     int width;
-    int grid[4];
+    unsigned short shape;
     char letter;
     struct tetrimino *next;
 } tetrimino;
@@ -31,6 +31,6 @@ int floorSqrt(int number);
 int check(char *buf, int bytes);
 int check_order(char *buf);
 int reader (int fd, tetrimino *tet);
-tetrimino *create_list(char **buf,int height, int width, char letter);
+tetrimino *create_list(tetrimino *tet, char *buf, char letter);
 
 #endif
