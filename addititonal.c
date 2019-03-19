@@ -12,40 +12,38 @@
 
 #include "fillit.h"
 
-tetrimino *create_list(char **buf,int height, int width, char letter)
+char **new_map(char **map, unsigned char size)
 {
-    tetrimino *tet;
+    int i, j;
 
-    tet = ft_memalloc(sizeof(tetrimino));
-    tet->height = height;
-    tet->width = width;
-    tet->letter = letter;
-    tet->grid = buf;
-
-    return (tet);
-}
-
-int floorSqrt(int number)
-{
-    int start;
-    int end;
-    int ans;
-    int mid;
-
-    start = 1;
-    end = number;
-    while (start <= end)
+    i = 0;
+    if (!(map = (char **) malloc(sizeof(char *) * size + 1)))
+        return NULL;
+    while (i < size)
     {
-        mid = (start + end) / 2;
-        if (mid * mid == number)
-            return (mid);
-        if (mid * mid < number)
+        if (!(map[i] = (char *) malloc(sizeof(char) * size + 1)))
+            return NULL;
+        j = 0;
+        while (j < size)
         {
-            start = mid + 1;
-            ans = mid;
+            map[i][j] = '.';
+            j++;
         }
-        else
-            end = mid - 1;
+        map[i][j] = 0;
+        i++;
     }
-    return (ans);
+    map[i] = 0;
+    return (map);
 }
+
+//void solver(tetrimino *tet)
+//{
+  //  char **map;
+  //  char **final;
+   // unsigned char size;
+
+  //  size = 0;
+  //  map = NULL;
+  //  map = new_map(map, floorSqrt(4 * 6));
+  //  final = NULL;
+//}

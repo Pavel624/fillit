@@ -17,9 +17,6 @@ int main (int argc, char **argv)
 	tetrimino *tet;
 	//char letter;
 
-	//int tet_count;
-
-	//tet_count = 0;
 	if (argc != 2)
 	{
 		ft_putstr("usage: ./fillit input file\n");
@@ -36,9 +33,17 @@ int main (int argc, char **argv)
 	else
 		ft_putstr("Valid\n");
 	//close();
-	for (int i = 1; i<= 26; i++)
-		printf("%d - min %d - max %d\n",i,floorSqrt(4 * i),floorSqrt(4 * i) + 2);
+	//for (int i = 1; i<= 26; i++)
+	//	printf("%d - min %d - max %d\n",i,floorSqrt(4 * i),floorSqrt(4 * i) + 2);
 	for (unsigned int i = 0; i<= sizeof(tet); i++)
-	printf("%d height %d, width %d, letter %c, shape %d\n",i ,tet[i].height,tet[i].width,tet[i].letter,tet[i].shape);
+	{
+	printf("%d height %d, width %d, letter %c\n",i ,tet[i].height,tet[i].width,tet[i].letter);
+	for (int k =0; k <=3; k++)
+		{
+			for (int m = 0; m<=3; m++)
+				printf("%c",tet[i].shape[k][m]);
+			printf("\n");
+		}
+	}
 	return (0);
 }

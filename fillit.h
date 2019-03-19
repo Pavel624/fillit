@@ -22,7 +22,7 @@ typedef struct tetrimino
 {
     int height;
     int width;
-    unsigned short shape;
+    char shape[4][4];
     char letter;
     struct tetrimino *next;
 } tetrimino;
@@ -32,5 +32,7 @@ int check(char *buf, int bytes);
 int check_order(char *buf);
 int reader (int fd, tetrimino *tet);
 tetrimino *create_list(tetrimino *tet, char *buf, char letter);
+void solver (tetrimino *tet);
+char **new_map(char **map, unsigned char size);
 
 #endif

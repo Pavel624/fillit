@@ -1,8 +1,7 @@
 NAME	= fillit
 CFLAGS	= -Wall -Werror -Wextra -I. -g
-FILES	= main.c read.c
+FILES	= main.c addititonal.c read.c
 LIB	= ./libft/libft.a
-				
 OBJ	= $(FILES:%.c=%.o)
 
 all: $(NAME)

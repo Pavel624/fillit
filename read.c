@@ -115,7 +115,6 @@ static void tetrimino_rectangle(char *buf, unsigned char *rectangle)
     rectangle[1] = 0;
     rectangle[2] = 3;
     rectangle[3] = 0;
-
     while (i < 20)
     {
             if (buf[i] == '#')
@@ -131,17 +130,32 @@ static void tetrimino_rectangle(char *buf, unsigned char *rectangle)
             }
         i++;
     }
+    rectangle [0] = rectangle[1] - rectangle[0] + 1;
+    rectangle [2] = rectangle[3] - rectangle[2] + 1;
 }
 
 tetrimino *create_list(tetrimino *tet, char *buf, char letter)
 {
+    unsigned char i, j;
     unsigned char rectangle[4];
 
+    i = 0;
+    j = 0;
     tetrimino_rectangle(buf, rectangle);
-    tet->width = rectangle[1] - rectangle[0] + 1;
-    tet->height = rectangle[3] - rectangle[2] + 1;
-    tet->shape = 0;
+    tet->width = rectangle[0];
+    tet->height = rectangle[2];
+    while (i <= 3)
+    {
+        while (j <= 3)
+        {
+            tet->shape[i][j] = buf[5 * i + j];
+            j++;   
+        }
+        j = 0;
+        i++;
+    }
     tet->letter = letter;
+
     return(tet);
 }
 
