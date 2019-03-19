@@ -61,7 +61,7 @@ int check(char *buf, int bytes)
         j = 0;
         i++;
     }
-    if (buf[20] != '\n' && bytes == 21)
+    if (ft_strlen(buf) == 21 && (buf[20] != '\n' && buf[20] != '\0'))
         return (0);
     if (!(check_order(buf)))
         return (0);
@@ -73,6 +73,7 @@ int check_order(char *buf)
     int i;
     int j;
     int sum;
+    char *new;
 
     i = 0;
     j = 0;
@@ -97,7 +98,14 @@ int check_order(char *buf)
         j = 0;
         i++;
     }
-    return (sum == 6 || sum == 8 ? 1 : 0);
+    if (sum == 8)
+    {
+        i = 0;
+        new = ft_strchr(buf, '#');
+        if (new[i+1] == '#' && new[i+5] == '#' && new[i+6] == '#')
+            sum = 6;
+    }
+    return (sum == 6 ? 1 : 0);
 }
 
 /*
@@ -130,7 +138,6 @@ static void tetrimino_rectangle(char *buf, unsigned char *rectangle)
             }
         i++;
     }
-    rectangle [0] = rectangle[1] - rectangle[0] + 1;
     rectangle [2] = rectangle[3] - rectangle[2] + 1;
 }
 
@@ -142,8 +149,8 @@ tetrimino *create_list(tetrimino *tet, char *buf, char letter)
     i = 0;
     j = 0;
     tetrimino_rectangle(buf, rectangle);
-    tet->width = rectangle[0];
-    tet->height = rectangle[2];
+    tet->width = rectangle [1] - rectangle[0] + 1;
+    tet->height = rectangle [3] - rectangle[2] + 1;
     while (i <= 3)
     {
         while (j <= 3)
@@ -164,10 +171,16 @@ int reader(int fd, tetrimino *tet)
     char buf[BUFF_SIZE];
     char letter;
     int bytes;
+    int last;
+    char *str;
 
     letter = 'A';
-    while ((bytes = read(fd, buf, BUFF_SIZE)) >= 20)
+    while ((bytes = read(fd, buf, BUFF_SIZE)) != 0)
     {
+        if (bytes < 20)
+            return (0);
+        str = ft_strncpy(ft_strnew(bytes), buf, bytes);    
+        last = bytes;
         if (!check(buf, bytes) || (letter - 'A') >= 26)
             return (0);
         if (!(create_list(tet, buf, letter)))
@@ -175,5 +188,7 @@ int reader(int fd, tetrimino *tet)
         tet++;
         letter++;
     }
+    if (last == 21 && bytes < 20)
+        return (0);
     return (1);
 }
