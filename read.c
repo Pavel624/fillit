@@ -14,27 +14,12 @@
 
 int floorSqrt(int number)
 {
-    int start;
-    int end;
-    int ans;
-    int mid;
+    int size;
 
-    start = 1;
-    end = number;
-    while (start <= end)
-    {
-        mid = (start + end) / 2;
-        if (mid * mid == number)
-            return (mid);
-        if (mid * mid < number)
-        {
-            start = mid + 1;
-            ans = mid;
-        }
-        else
-            end = mid - 1;
-    }
-    return (ans + 1);
+    size = 2;
+    while (size * size < number)
+        size++;
+    return (number);
 }
 
 int check(char *buf, int bytes)
@@ -138,7 +123,6 @@ static void tetrimino_rectangle(char *buf, unsigned char *rectangle)
             }
         i++;
     }
-    rectangle [2] = rectangle[3] - rectangle[2] + 1;
 }
 
 tetrimino *create_list(tetrimino *tet, char *buf, char letter)
@@ -172,14 +156,14 @@ int reader(int fd, tetrimino *tet)
     char letter;
     int bytes;
     int last;
-    char *str;
+    //char *str;
 
     letter = 'A';
     while ((bytes = read(fd, buf, BUFF_SIZE)) != 0)
     {
         if (bytes < 20)
             return (0);
-        str = ft_strncpy(ft_strnew(bytes), buf, bytes);    
+       // str = ft_strncpy(ft_strnew(bytes), buf, bytes);    
         last = bytes;
         if (!check(buf, bytes) || (letter - 'A') >= 26)
             return (0);

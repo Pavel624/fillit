@@ -18,11 +18,17 @@
 #define BUFF_SIZE 21
 #define MAX_TETRIMINO 26
 
+typedef struct map
+{
+    char **field;
+    unsigned char size;
+} map;
+
 typedef struct tetrimino
 {
     int height;
     int width;
-    char shape[4][4];
+    char **shape;
     char letter;
     struct tetrimino *next;
 } tetrimino;
@@ -32,7 +38,9 @@ int check(char *buf, int bytes);
 int check_order(char *buf);
 int reader (int fd, tetrimino *tet);
 tetrimino *create_list(tetrimino *tet, char *buf, char letter);
-void solver (tetrimino *tet);
-char **new_map(char **map, unsigned char size);
+map *solver (tetrimino *tet);
+map *new_map(unsigned char size);
+void print_result(map *map);
+void free_map(map *map);
 
 #endif

@@ -15,35 +15,22 @@
 int main (int argc, char **argv)
 {
 	tetrimino *tet;
-	//char letter;
+	map *map;
 
 	if (argc != 2)
 	{
 		ft_putstr("usage: ./fillit input file\n");
 		return (-1);
 	}
-	if (!(tet = (tetrimino *)malloc(sizeof(tetrimino) * 27)))
-		{
-			ft_putstr("error\n");
-			return (0);
-		}
-	ft_bzero(tet,sizeof(tetrimino) * 27);
-	if (!(reader(open(argv[1], O_RDONLY), tet)))
-		ft_putstr("error\n");
-	else
-		ft_putstr("Valid\n");
-	//close();
-	//for (int i = 1; i<= 26; i++)
-	//	printf("%d - min %d - max %d\n",i,floorSqrt(4 * i),floorSqrt(4 * i) + 2);
-	for (unsigned int i = 0; i<= sizeof(tet); i++)
+	if (!(tet = (tetrimino *)malloc(sizeof(tetrimino) * 27)) || 
+				!(reader(open(argv[1], O_RDONLY), tet)))
 	{
-	printf("%d height %d, width %d, letter %c\n",i ,tet[i].height,tet[i].width,tet[i].letter);
-	for (int k =0; k <=3; k++)
-		{
-			for (int m = 0; m<=3; m++)
-				printf("%c",tet[i].shape[k][m]);
-			printf("\n");
-		}
+		ft_putstr("error\n");
+		return (-1);
 	}
+	map = solver(tet);
+	print_result(map);
+	free_map(map);
+	//free_tet(tet);
 	return (0);
 }
