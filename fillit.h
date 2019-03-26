@@ -42,5 +42,8 @@ map *solver (tetrimino *tet);
 map *new_map(unsigned char size);
 void print_result(map *map);
 void free_map(map *map);
+int get_solution(map *map, tetrimino *tet);
+int can_place(map *map, tetrimino *tet,int x, int y);
+void move_tet(map *map, tetrimino *tet, int x, int y);
 
 #endif
