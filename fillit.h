@@ -30,20 +30,20 @@ typedef struct tetrimino
     int width;
     char **shape;
     char letter;
-    struct tetrimino *next;
 } tetrimino;
 
 int floorSqrt(int number);
 int check(char *buf, int bytes);
 int check_order(char *buf);
-int reader (int fd, tetrimino *tet);
-tetrimino *create_list(tetrimino *tet, char *buf, char letter);
-map *solver (tetrimino *tet);
+t_list *reader (int fd);
+tetrimino *get_one_tet(char *buf, char letter);
+map *solver (t_list *tet);
 map *new_map(unsigned char size);
 void print_result(map *map);
 void free_map(map *map);
-int get_solution(map *map, tetrimino *tet);
+int get_solution(map *map, t_list *tet);
 int can_place(map *map, tetrimino *tet,int x, int y);
 void move_tet(map *map, tetrimino *tet, int x, int y);
+t_list *ft_lstreverse(t_list *alst);
 
 #endif

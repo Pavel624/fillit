@@ -19,7 +19,7 @@ int floorSqrt(int number)
     size = 2;
     while (size * size < number)
         size++;
-    return (number);
+    return (size);
 }
 
 int check(char *buf, int bytes)
@@ -125,39 +125,65 @@ static void tetrimino_rectangle(char *buf, unsigned char *rectangle)
     }
 }
 
-tetrimino *create_list(tetrimino *tet, char *buf, char letter)
+tetrimino *get_one_tet(char *buf, char letter)
 {
-    unsigned char i, j;
+    unsigned char i;
     unsigned char rectangle[4];
+    tetrimino *tet_one;
+    tet_one = NULL;
 
+    tet_one = (tetrimino *) malloc(sizeof(tetrimino));
     i = 0;
-    j = 0;
     tetrimino_rectangle(buf, rectangle);
-    tet->width = rectangle [1] - rectangle[0] + 1;
-    tet->height = rectangle [3] - rectangle[2] + 1;
-    while (i <= 3)
+    tet_one->width = rectangle [1] - rectangle[0] + 1;
+    tet_one->height = rectangle [3] - rectangle[2] + 1;
+    tet_one->shape = (char **) malloc(tet_one->height);
+    while (i < tet_one->height)
     {
-        while (j <= 3)
-        {
-            tet->shape[i][j] = buf[5 * i + j];
-            j++;   
-        }
-        j = 0;
+        tet_one->shape[i] = (char *) malloc (tet_one->width);
+        ft_strncpy(tet_one->shape[i], buf + rectangle[0] + (i + rectangle [2]) * 5, tet_one->width);
         i++;
     }
-    tet->letter = letter;
-
-    return(tet);
+    tet_one->letter = letter;
+    
+    return(tet_one);
 }
 
-int reader(int fd, tetrimino *tet)
+t_list *ft_lstreverse(t_list *alst)
+{
+    t_list *node;
+    t_list *reversed;
+    t_list *tmp;
+
+    if (!(alst) || !(alst->next))
+        return (alst);
+
+    node = alst->next;
+    reversed = alst;
+    reversed->next = NULL;
+
+    while (node)
+    {
+        tmp = node;
+        node = node->next;
+        tmp->next = reversed;
+        reversed = tmp;
+    }
+    return (reversed);
+}
+
+t_list *reader(int fd)
 {
     char buf[BUFF_SIZE];
     char letter;
     int bytes;
     int last;
+    tetrimino *tet_one;
+    t_list *tet_list;
     //char *str;
 
+    tet_list = NULL;
+    tet_one = NULL;
     letter = 'A';
     while ((bytes = read(fd, buf, BUFF_SIZE)) != 0)
     {
@@ -167,12 +193,12 @@ int reader(int fd, tetrimino *tet)
         last = bytes;
         if (!check(buf, bytes) || (letter - 'A') >= 26)
             return (0);
-        if (!(create_list(tet, buf, letter)))
+        if (!(tet_one = get_one_tet(buf, letter)))
             return (0);
-        tet++;
+        ft_lstadd(&tet_list, ft_lstnew(tet_one, sizeof(tetrimino)));
         letter++;
     }
     if (last == 21 && bytes < 20)
         return (0);
-    return (1);
+    return (tet_list);
 }
