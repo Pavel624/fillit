@@ -15,9 +15,8 @@
 int main (int argc, char **argv)
 {
 	map *map;
+	int fd;
 	t_list *tet_list;
-
-	//tetrimino *tet;
 
 	tet_list = NULL;
 	if (argc != 2)
@@ -25,15 +24,16 @@ int main (int argc, char **argv)
 		ft_putstr("usage: ./fillit input file\n");
 		return (-1);
 	}
-	if (!(tet_list = reader(open(argv[1], O_RDONLY))))
+	if (!(tet_list = reader(fd = open(argv[1], O_RDONLY))))
 	{
 		ft_putstr("error\n");
 		return (-1);
 	}
+	close(fd);
 	tet_list = ft_lstreverse(tet_list);
 	map = solver(tet_list);
 	print_result(map);
-	//free_map(map);
+	free_map(map);
 	//free_tet(tet);
 	return (0);
 }

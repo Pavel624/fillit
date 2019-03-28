@@ -132,20 +132,19 @@ tetrimino *get_one_tet(char *buf, char letter)
     tetrimino *tet_one;
     tet_one = NULL;
 
-    tet_one = (tetrimino *) malloc(sizeof(tetrimino));
+    tet_one = (tetrimino *)malloc(sizeof(tetrimino));
     i = 0;
     tetrimino_rectangle(buf, rectangle);
     tet_one->width = rectangle [1] - rectangle[0] + 1;
     tet_one->height = rectangle [3] - rectangle[2] + 1;
-    tet_one->shape = (char **) malloc(tet_one->height);
+    tet_one->shape = (char **)malloc(tet_one->height * sizeof(char *));
     while (i < tet_one->height)
     {
-        tet_one->shape[i] = (char *) malloc (tet_one->width);
-        ft_strncpy(tet_one->shape[i], buf + rectangle[0] + (i + rectangle [2]) * 5, tet_one->width);
+        tet_one->shape[i] = (char *)malloc(tet_one->width * sizeof(char));
+        ft_strncpy(tet_one->shape[i], buf + rectangle[0] + (i + rectangle[2]) * 5, tet_one->width);
         i++;
     }
     tet_one->letter = letter;
-    
     return(tet_one);
 }
 

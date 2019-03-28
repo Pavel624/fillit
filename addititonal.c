@@ -32,9 +32,11 @@ void free_map(map *map)
     i = 0;
     while (i < map->size)
     {
-        ft_memdel((void **)map->field[i]);
+        ft_memdel((void **) map->field);
+        free((void *)map->field[i]);
         i++;
     }
+    ft_memdel((void **) map->field);
     ft_memdel((void **)map);
 }
 
