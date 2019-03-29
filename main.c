@@ -27,6 +27,7 @@ int main (int argc, char **argv)
 	if (!(tet_list = reader(fd = open(argv[1], O_RDONLY))))
 	{
 		ft_putstr("error\n");
+		close(fd);
 		return (-1);
 	}
 	close(fd);

@@ -6,7 +6,7 @@
 /*   By: nbethany <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/24 14:38:23 by nbethany          #+#    #+#             */
-/*   Updated: 2019/02/24 14:39:49 by nbethany         ###   ########.fr       */
+/*   Updated: 2019/03/29 20:06:57 by nbethany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ void free_tetrimino(tetrimino *tet)
     ft_memdel((void **) &tet);
 }
 
-void free_tet_list(t_list *tet_list)
+t_list *free_tet_list(t_list *tet_list)
 {
     t_list *tmp;
 
@@ -150,6 +150,7 @@ void free_tet_list(t_list *tet_list)
         ft_memdel((void **)&tet_list);
         tet_list = tmp;
     }
+    return (NULL);
 }
 
 tetrimino *get_one_tet(char *buf, char letter)
@@ -205,7 +206,6 @@ t_list *reader(int fd)
     int last;
     tetrimino *tet_one;
     t_list *tet_list;
-    //char *str;
 
     tet_list = NULL;
     tet_one = NULL;
@@ -213,21 +213,17 @@ t_list *reader(int fd)
     while ((bytes = read(fd, buf, BUFF_SIZE)) != 0)
     {
         if (bytes < 20)
-            return (0);
-       // str = ft_strncpy(ft_strnew(bytes), buf, bytes);    
+            return (free_tet_list(tet_list));
         last = bytes;
         if (!check(buf, bytes) || (letter - 'A') >= 26)
-        {
-            free_tet_list(tet_list);
-            return (0);
-        }
+            return (free_tet_list(tet_list));
         if (!(tet_one = get_one_tet(buf, letter)))
-            return (0);
+            return (free_tet_list(tet_list));
         ft_lstadd(&tet_list, ft_lstnew(tet_one, sizeof(tetrimino)));
         ft_memdel((void **) &tet_one);
         letter++;
     }
     if (last == 21 && bytes < 20)
-        return (0);
+        return (free_tet_list(tet_list));
     return (tet_list);
 }

@@ -32,11 +32,11 @@ void free_map(map *map)
     i = 0;
     while (i < map->size)
     {
-        ft_memdel((void **)&map->field[i]);
+        free((void *)map->field[i]);
         i++;
     }
-    ft_memdel((void **)&map->field);
-    ft_memdel((void **)&map);
+    ft_memdel((void **) map->field);
+    ft_memdel((void **)map);
 }
 
 map *new_map(unsigned char size)
@@ -174,6 +174,7 @@ map *solver(t_list *tet)
 {
     map *map;
     unsigned char size;
+    // need a function to count all tetraminos
     size = floorSqrt(4 * count_tet(tet));
     map = new_map(size);
 
