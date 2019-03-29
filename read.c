@@ -136,6 +136,7 @@ void free_tetrimino(tetrimino *tet)
         i++;
     }
     ft_memdel((void **) &tet->shape);
+    ft_memdel((void **) &tet);
 }
 
 void free_tet_list(t_list *tet_list)
@@ -146,9 +147,7 @@ void free_tet_list(t_list *tet_list)
     {
         free_tetrimino((tetrimino *)tet_list->content);
         tmp = tet_list->next;
-        ft_memdel((void **) (tetrimino *)(&tet_list->content));
-        ft_memdel((void **) &tet_list->content);
-        ft_memdel((void **) &tet_list);
+        ft_memdel((void **)&tet_list);
         tet_list = tmp;
     }
 }
@@ -222,6 +221,7 @@ t_list *reader(int fd)
         if (!(tet_one = get_one_tet(buf, letter)))
             return (0);
         ft_lstadd(&tet_list, ft_lstnew(tet_one, sizeof(tetrimino)));
+        ft_memdel((void **) &tet_one);
         letter++;
     }
     if (last == 21 && bytes < 20)
