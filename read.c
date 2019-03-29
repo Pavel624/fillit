@@ -125,12 +125,39 @@ static void tetrimino_rectangle(char *buf, unsigned char *rectangle)
     }
 }
 
+void free_tetrimino(tetrimino *tet)
+{
+    int i;
+
+    i = 0;
+    while (i < tet->height)
+    {
+        ft_memdel((void **) &tet->shape[i]);
+        i++;
+    }
+    ft_memdel((void **) &tet->shape);
+}
+
+void free_tet_list(t_list *tet_list)
+{
+    t_list *tmp;
+
+    while(tet_list)
+    {
+        free_tetrimino((tetrimino *)tet_list->content);
+        tmp = tet_list->next;
+        ft_memdel((void **) (tetrimino *)(&tet_list->content));
+        ft_memdel((void **) &tet_list->content);
+        ft_memdel((void **) &tet_list);
+        tet_list = tmp;
+    }
+}
+
 tetrimino *get_one_tet(char *buf, char letter)
 {
     unsigned char i;
     unsigned char rectangle[4];
     tetrimino *tet_one;
-    tet_one = NULL;
 
     tet_one = (tetrimino *)malloc(sizeof(tetrimino));
     i = 0;

@@ -45,5 +45,6 @@ int get_solution(map *map, t_list *tet);
 int can_place(map *map, tetrimino *tet,int x, int y);
 void move_tet(map *map, tetrimino *tet, int x, int y);
 t_list *ft_lstreverse(t_list *alst);
+void free_tet_list(t_list *tet_list);
 
 #endif

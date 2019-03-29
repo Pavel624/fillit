@@ -34,6 +34,6 @@ int main (int argc, char **argv)
 	map = solver(tet_list);
 	print_result(map);
 	free_map(map);
-	//free_tet(tet);
+	free_tet_list(tet_list);
 	return (0);
 }
