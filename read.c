@@ -217,7 +217,10 @@ t_list *reader(int fd)
        // str = ft_strncpy(ft_strnew(bytes), buf, bytes);    
         last = bytes;
         if (!check(buf, bytes) || (letter - 'A') >= 26)
+        {
+            free_tet_list(tet_list);
             return (0);
+        }
         if (!(tet_one = get_one_tet(buf, letter)))
             return (0);
         ft_lstadd(&tet_list, ft_lstnew(tet_one, sizeof(tetrimino)));
