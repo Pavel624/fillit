@@ -3,32 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nbethany <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: kkuvalis <kkuvalis@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/24 14:15:26 by nbethany          #+#    #+#             */
-/*   Updated: 2019/02/24 14:15:38 by nbethany         ###   ########.fr       */
+/*   Updated: 2019/03/31 17:37:18 by kkuvalis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 
-int main (int argc, char **argv)
+int			main(int argc, char **argv)
 {
-	map *map;
-	int fd;
-	t_list *tet_list;
+	t_map	*map;
+	int		fd;
+	t_list	*tet_list;
 
 	tet_list = NULL;
 	if (argc != 2)
 	{
 		ft_putstr("usage: ./fillit input file\n");
-		return (-1);
+		exit(EXIT_SUCCESS);
 	}
-	if (!(tet_list = reader(fd = open(argv[1], O_RDONLY))))
+	fd = open(argv[1], O_RDONLY);
+	if (!(tet_list = reader(fd, tet_list)))
 	{
 		ft_putstr("error\n");
-		close(fd);
-		return (-1);
+		exit(EXIT_SUCCESS);
 	}
 	close(fd);
 	tet_list = ft_lstreverse(tet_list);
